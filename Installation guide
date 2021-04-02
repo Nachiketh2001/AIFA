@@ -1,1 +1,24 @@
-Download the two files in the Source code folder and then run it along with numpy on your computer.
+Installation Guide
+
+The source code was completely written using pycharm professional and it is in the python language. 
+The best way to test the source code and edit it is to download the python files from source code directory and open them using the pycharm or similar type of IDE.
+After downloading the python files, please make sure that the IDE you are using has a built in library-numpy. 
+I have only used a single built in library-numpy and rest part of the source code doesn't contain a single library or algorithm taken from outside.
+
+After opening the two source code files on your computer, run the 'execute.py' file where you need to give the 
+following inputs regarding the Assignment's electric vehicle problem:
+
+Variable         Indicates                      Input type
+n                number of vehicles             int
+e                distance between the cities    2D list(n*n)-float
+k                number of vehicles             int
+s_node           sorce node                     1D list(k)-int
+d_node           destination node               1D list(k)-int
+initial_battery  Initial battery of a vehicle   1D list(k)-float
+charging         Charging rate of a station     1D list(n)-float
+discharging      Discharging rate of a station  1D list(k)-float
+maximum_battery  Maximum battery of a vehicle   1D list(k)-float
+speed            average speed of a vehicle     1D list(k)-float
+
+While providing a list as an input, just separate two numbers by a space and while providing a 2D list as an input, just provide the numbers as a single list, 
+the reshaping will be done automatically.
