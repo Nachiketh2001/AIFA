@@ -1,6 +1,5 @@
 AI610005
 Assignment-1
-Electric vehicles
 Route_Finding_Algorithm
 
 The assignment is to solve an electric vehicle problem by finding the best posssible route to optimisethe time taken by the electric vehicles which are travelling across cities. I have approached the assignment by incorporating heuristic and optimal algorithm into a single file called Route_Finding_algorithm in the following way:
