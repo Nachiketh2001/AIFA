@@ -1,5 +1,5 @@
 import numpy as np
-
+import Optimize
 
 def calculate_distance(heuristic, row, col):
     n = heuristic.shape[0]
@@ -62,10 +62,10 @@ def calculate_heuristic(n, e):
     intermediate_node = []
     column = []
 
-    for j in range(0, n):
+    for i1 in range(0, n):
         column.append(None)
 
-    for i in range(0, n):
+    for i2 in range(0, n):
         intermediate_node.append(column)
     # Lists the intermediate nodes through which a vehicle passes while travelling from source node to destination node
 
@@ -95,23 +95,14 @@ def calculate_heuristic(n, e):
 def find_route(n, e, k, s_node, d_node, initial_battery, charging, discharging, maximum_battery, speed):
 
     heuristic, intermediate_node = calculate_heuristic(n, e)
-    time = np.zeros(k)
-    time_without_charge = np.zeros(k)
     print(heuristic)
 
-    i1 = 0
-    while i1 < k:
-        time_without_charge[i1] = heuristic[s_node[i1]][d_node[i1]] / speed[i1]
-        i1 = i1 + 1
-
-    # A dictionary 'battery_level' is defined to store the battery_level at any time
-    battery_level = {}
-    # A dictionary required charge is defined to tell what charge is required by a vehicle in it's complete travel
-    required_charge = {}
-    # A dictionary 'station_busy_at' is defined to tell when will the next station be free
-    station_busy_at = []
-    for j in range(0, n):
-        station_busy_at[j] = 0
+    time = np.zeros(k)
+    battery_level = {}  # battery_level is defined to store the battery_level of all vehicle at any time
+    required_charge = {}  # required charge stores what charge is required by a vehicle in it's complete travel
+    required_time_start = {}
+    required_time_middle = {}
+    begin_time_middle = {}
 
     i1 = 0
     while i1 < k:
@@ -119,14 +110,20 @@ def find_route(n, e, k, s_node, d_node, initial_battery, charging, discharging, 
         battery_level[i1] = initial_battery[i1]
         middle_node = intermediate_node[s_node[i1]][d_node[i1]]
 
-        if required_charge[i1] < battery_level[i1]:
+        if required_charge[i1] < maximum_battery[i1]:
 
             if maximum_battery[i1] == battery_level[i1]:
+                required_time_start[i1] = 0
+                required_time_middle[i1] = 0
+                begin_time_middle[i1] = 0
                 time[i1] = heuristic[s_node[i1]][d_node[i1]] / speed[i1]
 
             elif maximum_battery[i1] > battery_level[i1]:
                 starting_time = (required_charge[i1] - battery_level[i1]) / charging[s_node[i1]]
-                station_busy_at[s_node[i1]] = station_busy_at[s_node[i1]] + [0, starting_time]
+
+                required_time_start[i1] = starting_time
+                required_time_middle[i1] = 0
+                begin_time_middle[i1] = 0
                 time[i1] = heuristic[s_node[i1]][d_node[i1]] / speed[i1] + starting_time
 
         elif required_charge[i1] > maximum_battery[i1]:
@@ -134,10 +131,12 @@ def find_route(n, e, k, s_node, d_node, initial_battery, charging, discharging, 
             if maximum_battery[i1] == battery_level[i1] and middle_node is not None:
                 battery_level[i1] -= heuristic[s_node[i1]][middle_node] / discharging[i1]
                 required_charge[i1] -= heuristic[s_node[i1]][middle_node] / discharging[i1]
-
                 initial_time = heuristic[s_node[i1]][middle_node] / speed[i1]
                 final_time = initial_time+(required_charge[i1] - battery_level[i1]) / charging[middle_node]
-                station_busy_at[middle_node] = station_busy_at[middle_node] + [initial_time, final_time]
+
+                required_time_start[i1] = 0
+                required_time_middle[i1] = final_time - initial_time
+                begin_time_middle[i1] = initial_time
                 time[i1] = heuristic[s_node[i1]][d_node[i1]] / speed[i1] + final_time - initial_time
 
             # When the maximum battery is lesser than required charge and there is no middle node, journey is impossible
@@ -150,17 +149,37 @@ def find_route(n, e, k, s_node, d_node, initial_battery, charging, discharging, 
             elif maximum_battery[i1] > battery_level[i1] and middle_node is not None:
 
                 starting_time = (maximum_battery[i1] - battery_level[i1]) / charging[s_node[i1]]
-                station_busy_at[s_node[i1]] = station_busy_at[s_node[i1]] + [0, starting_time]
-
                 battery_level[i1] -= heuristic[s_node[i1]][middle_node] / discharging[i1]
                 required_charge[i1] -= heuristic[s_node[i1]][middle_node] / discharging[i1]
-
                 initial_time = heuristic[s_node[i1]][middle_node] / speed[i1] + starting_time
                 final_time = initial_time + (required_charge[i1] - battery_level[i1]) / charging[middle_node]
-                station_busy_at[middle_node] = station_busy_at[middle_node] + [initial_time, final_time]
+
+                required_time_start[i1] = starting_time
+                required_time_middle[i1] = final_time - initial_time
+                begin_time_middle[i1] = initial_time
                 time[i1] = heuristic[s_node[i1]][d_node[i1]] / speed[i1] + starting_time + final_time - initial_time
 
         i1 = i1 + 1
 
-    print(time)
-    return 0
+    station_node = []  # station_node lists all the vehicles starting from or passing through a particular node
+
+    for i1 in range(0, n):
+        node_at_start = []
+        node_at_middle = []
+        for i2 in range(0, k):
+            if s_node[i2] == i1:
+                node_at_start = node_at_start + [i2]
+        for i3 in range(0, n):
+            if intermediate_node[i1][i3] is not None:
+                for i4 in range(0, k):
+                    if i1 == s_node[i4] and i3 == d_node[i4]:
+                        node_at_middle = node_at_middle + [i4]
+        if len(node_at_start) == 0:
+            node_at_start = None
+        if len(node_at_middle) == 0:
+            node_at_middle = None
+        station_node = station_node + [[node_at_start, node_at_middle]]
+
+    time = Optimize.optimize(n, time, required_time_start, required_time_middle, begin_time_middle, station_node)
+
+    return time
