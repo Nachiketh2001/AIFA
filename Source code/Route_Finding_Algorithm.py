@@ -209,4 +209,4 @@ def find_route(n, e, k, s_node, d_node, initial_battery, charging, discharging, 
 
     time = Optimize.optimize(n, time, required_time_start, required_time_middle, begin_time_middle, station_node)
 
-    return time
+    return time, heuristic
