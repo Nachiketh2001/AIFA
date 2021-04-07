@@ -28,5 +28,6 @@ speed = np.array(input("Enter average travelling speed: ").split(), float)
 
 # Applying Route_Finding_Algorithm
 
-time = Route_Finding_Algorithm.find_route(n, e, k, s_node, d_node, initial_battery, charging, discharging, maximum_battery, speed)
+time, heuristic = Route_Finding_Algorithm.find_route(n, e, k, s_node, d_node, initial_battery, charging, discharging, maximum_battery, speed)
 print(time)
+print(heuristic)
