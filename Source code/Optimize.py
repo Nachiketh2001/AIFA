@@ -107,7 +107,7 @@ def optimize(n, time, required_time_start, required_time_middle, begin_time_midd
                     t_initial = begin_time_middle[row[i2]]
                     t_final = begin_time_middle[row[i2]] + required_time_middle[row[i2]]
                     time_occupied, t_initial_new = check_time(time_occupied, t_initial, t_final)
-                    time[row[i2]] = time[row[i2]] + t_initial_new - t_initial
+                    time[row[i2]] = time[row[i2]] - t_initial_new + t_initial
                     i2 = i2 + 1
         i1 = i1 + 1
 
