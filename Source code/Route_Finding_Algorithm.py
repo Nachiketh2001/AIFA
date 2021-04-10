@@ -105,8 +105,6 @@ def calculate_heuristic(n, e):
 def find_route(n, e, k, s_node, d_node, initial_battery, charging, discharging, maximum_battery, speed):
 
     heuristic, intermediate_node = calculate_heuristic(n, e)
-    print(heuristic)
-    print(intermediate_node)
 
     time = np.zeros(k)
     battery_level = {}  # battery_level is defined to store the battery_level of all vehicle at any time
