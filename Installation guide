@@ -1,11 +1,11 @@
 Installation Guide
 
-The source code was completely written using pycharm professional and it is in the python language. 
-The best way to test the source code and edit it is to download the python files from source code directory and open them using the pycharm or similar type of IDE.
-After downloading the python files, please make sure that the IDE you are using has a built in library-numpy. 
-I have only used a single built in library-numpy and rest part of the source code doesn't contain a single library or algorithm taken from outside.
+1) The source code was completely written using pycharm professional and it is in the python language. 
+2) The best way to test the source code and edit it is to download the python files from source code directory and open them using the pycharm or similar type of IDE.
+3) After downloading the python files, please make sure that the IDE you are using has a built in library-numpy. 
+4) I have only used a single built in library-numpy and rest part of the source code doesn't contain a single library or algorithm taken from outside.
 
-After opening the two source code files on your computer, run the 'execute.py' file where you need to give the 
+5) After opening the three source code files on your computer, run the 'execute.py' file where you need to give the 
 following inputs regarding the Assignment's electric vehicle problem:
 
 Variable         Indicates                      Input type
@@ -21,4 +21,8 @@ maximum_battery  Maximum battery of a vehicle   1D list(k)-float
 speed            average speed of a vehicle     1D list(k)-float
 
 While providing a list as an input, just separate two numbers by a space and while providing a 2D list as an input, just provide the numbers as a single list, 
-the reshaping will be done automatically.
+the reshaping will be done automatically. Please refer the report file in the main for more clarity.
+
+6) The output will contain two components
+  (a) The heuristic matrix describing the distance calculated between any two cities.
+  (b) The time matrix describing the total time taken by all the vehicles after optimization.
