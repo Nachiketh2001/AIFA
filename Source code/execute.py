@@ -8,10 +8,6 @@ e = np.array(input("Enter distance between cities: ").split(), float)
 e = e.reshape(n, n)
 
 k = int(input("Enter number of electric vehicles: "))
-
-# s_node-source node   d_node-destination node   b-battery charge status initially
-# c-charging rate   d-discharging rate   m-maximum battery capacity   s-average travelling speed
-
 s_node = np.array(input("Enter source node: ").split(), int)
 d_node = np.array(input("Enter destination node: ").split(), int)
 
