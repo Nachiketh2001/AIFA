@@ -9,7 +9,7 @@ Installation Guide
 following inputs regarding the Assignment's electric vehicle problem:
 
 Variable         Indicates                      Input type
-n                number of vehicles             int
+n                number of cities               int
 e                distance between the cities    2D list(n*n)-float
 k                number of vehicles             int
 s_node           sorce node                     1D list(k)-int
